@@ -1,7 +1,7 @@
 # BehaviourSystem
 Universal system of behaviour for all kinds of entities.
 
-File usage:
+Files usage:
 
 BehaviourProcessor - main script that will contain all the States of the object.
 
