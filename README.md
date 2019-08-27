@@ -1,5 +1,5 @@
 # BehaviourSystem
-Universal system of behaviour for all kinds of entities.
+Universal behaviour system for all kinds of entities.
 
 Files usage:
 
