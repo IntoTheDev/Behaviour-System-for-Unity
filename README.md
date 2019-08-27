@@ -3,7 +3,7 @@ Universal system of behaviour for all kinds of entities.
 
 File usage:
 
-BehaviorProcessor - main script that will contain all the States of the object.
+BehaviourProcessor - main script that will contain all the States of the object.
 
 State - state of an entity that contains actions and transitions.
 
