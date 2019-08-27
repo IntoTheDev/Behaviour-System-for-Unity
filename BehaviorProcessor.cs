@@ -31,7 +31,7 @@ public class BehaviorProcessor : MonoBehaviour
 	{
 		if (aiActive)
 		{
-			timeInState += GlobalReference.deltaTime;
+			timeInState += Time.deltaTime;
 			currentState.UpdateState();
 		}
 	}
