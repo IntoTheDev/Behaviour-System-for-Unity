@@ -30,8 +30,8 @@ public class State
 
 	public void UpdateState()
 	{
-		DoActions();
-		CheckTransitions();
+		PerformActions();
+		PerformTransitions();
 	}
 
 	public void ExitState()
@@ -44,13 +44,13 @@ public class State
 				transitions[i].decision[j].ExitDecision();
 	}
 
-	private void DoActions()
+	private void PerformActions()
 	{
 		for (int i = 0; i < actionsCount; i++)
 			actions[i].Act();
 	}
 
-	private void CheckTransitions()
+	private void PerformTransitions()
 	{
 		for (int i = 0; i < transitionsCount; i++)
 		{
