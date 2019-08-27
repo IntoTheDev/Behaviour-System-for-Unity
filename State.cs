@@ -11,7 +11,7 @@ public class State
 	[SerializeField]
 	private Transition[] transitions;
 
-	private BehaviorProcessor behavior;
+	private BehaviourProcessor behavior;
 
 	private int actionsCount;
 	private int transitionsCount;
@@ -90,7 +90,7 @@ public class State
 		}
 	}
 
-	public void InitializeState(BehaviorProcessor behaviorProcessor, int stateIndex)
+	public void InitializeState(BehaviourProcessor behaviorProcessor, int stateIndex)
 	{
 		behavior = behaviorProcessor;
 		this.stateIndex = stateIndex;
@@ -101,9 +101,6 @@ public class State
 		if (actionsCount <= 0 || actions[0] == null)
 			return;
 
-		for (int i = 0; i < actionsCount; i++)
-			actions[i].InitializeAction(behavior);
-
 		if (transitionsCount <= 0 || transitions[0].decision == null)
 			return;
 
@@ -111,10 +108,6 @@ public class State
 
 		for (int i = 0; i < transitionsCount; i++)
 			decisionsCount[i] = transitions[i].decision.Length;
-
-		for (int i = 0; i < transitionsCount; i++)
-			for (int j = 0; j < decisionsCount[i]; j++)
-				transitions[i].decision[j].InitializeDecision(behavior);
 	}
 
 	private bool NotThisState()
