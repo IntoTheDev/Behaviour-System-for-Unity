@@ -1,25 +1,22 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using NaughtyAttributes;
+using ToolBox.Attributes;
 
 public class BehaviourProcessor : MonoBehaviour
 {
-	[ReorderableList, SerializeField, BoxGroup("States")]
-	private List<State> states;
-	private int statesCount;
-	[ReadOnly, BoxGroup("Debug")]
-	public State currentState = null;
-
-	[SerializeField, BoxGroup("Debug")]
-	private bool aiActive;
-
 	// Needed for other systems
 	public delegate void OnStateChange();
 	public event OnStateChange onStateChange;
 
+	[ReadOnly, BoxGroup("Debug")] public State currentState = null;
+
+	private int statesCount;
+
+	[ReorderableList, SerializeField, BoxGroup("States")] private State[] states;
+	[SerializeField, BoxGroup("Debug")] private bool aiActive;
+
 	private void Start()
 	{
-		statesCount = states.Count;
+		statesCount = states.Length;
 		InitializeStates();
 		TransitionToState(states[0].stateName);
 	}

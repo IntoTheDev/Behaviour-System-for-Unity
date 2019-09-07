@@ -4,19 +4,16 @@
 public class State
 {
 	public string stateName;
-	[HideInInspector]
-	public int stateIndex;
-	[SerializeField]
-	private Action[] actions;
-	[SerializeField]
-	private Transition[] transitions;
+
+	[HideInInspector] public int stateIndex;
 
 	private BehaviourProcessor behavior;
-
 	private int actionsCount;
 	private int transitionsCount;
-
 	private int[] decisionsCount;
+
+	[SerializeField] private Action[] actions;
+	[SerializeField] private Transition[] transitions;
 
 	public void EnterState()
 	{
