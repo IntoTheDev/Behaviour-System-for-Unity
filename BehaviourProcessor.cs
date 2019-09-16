@@ -1,51 +1,54 @@
 ﻿using UnityEngine;
 using ToolBox.Attributes;
 
+[DisallowMultipleComponent]
 public class BehaviourProcessor : MonoBehaviour
 {
 	// Needed for other systems
 	public delegate void OnStateChange();
-	public event OnStateChange onStateChange;
+	public event OnStateChange onStateChange = delegate { };
 
 	[ReadOnly, BoxGroup("Debug")] public State currentState = null;
+	[ReorderableList, SerializeField, BoxGroup("States")] private State[] states = null;
+	[SerializeField, BoxGroup("Debug")] private bool actorActive;
 
 	private int statesCount;
-
-	[ReorderableList, SerializeField, BoxGroup("States")] private State[] states;
-	[SerializeField, BoxGroup("Debug")] private bool aiActive;
 
 	private void Start()
 	{
 		statesCount = states.Length;
 		InitializeStates();
-		TransitionToState(states[0].stateName);
+
+		currentState = states[0];
+		currentState.EnterState();
+		onStateChange();
 	}
 
 	private void Update()
 	{
-		if (aiActive)
+		if (actorActive)
 			currentState.UpdateState();
 	}
 
-	public void TransitionToState(string nextState)
+	public void TransitionToState(State nextState)
 	{
-		if (nextState == currentState.stateName)
+		if (nextState.stateIndex == currentState.stateIndex)
 			return;
 
 		if (currentState != null)
 			currentState.ExitState();
 
-		currentState = FindState(nextState);
+		currentState = nextState;
 
 		currentState.EnterState();
 
 		onStateChange();
 	}
 
-	private State FindState(string newStateName)
+	public State FindState(string newStateName)
 	{
 		for (int i = 0; i < statesCount; i++)
-			if (newStateName == states[i].stateName)
+			if (newStateName == states[i].StateName)
 				return states[i];
 
 		return null;
@@ -55,7 +58,7 @@ public class BehaviourProcessor : MonoBehaviour
 	{
 		if (states[0] == null)
 		{
-			aiActive = false;
+			actorActive = false;
 			Debug.LogError(name + " doesn't have states!");
 			enabled = false;
 			return;

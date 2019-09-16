@@ -3,17 +3,20 @@
 [System.Serializable]
 public class State
 {
-	public string stateName;
+	public string StateName => stateName;
+	public int stateIndex { get; private set; }
 
-	[HideInInspector] public int stateIndex;
+	[SerializeField] private string stateName = "";
+	[SerializeField] private Action[] actions = null;
+	[SerializeField] private Transition[] transitions = null;
 
-	private BehaviourProcessor behavior;
+	private State[][] trueStates = null;
+	private State[][] falseStates = null;
+
+	private BehaviourProcessor behaviour;
 	private int actionsCount;
 	private int transitionsCount;
 	private int[] decisionsCount;
-
-	[SerializeField] private Action[] actions;
-	[SerializeField] private Transition[] transitions;
 
 	public void EnterState()
 	{
@@ -56,19 +59,19 @@ public class State
 			for (int j = 0; j < decisionsCount[i]; j++)
 			{
 				bool currentDecision = transitions[i].decision[j].Decide();
-
 				decisionSucceeded = currentDecision && decisionSucceeded;
 			}
 
-			string[] newStates = decisionSucceeded ? transitions[i].trueStates : transitions[i].falseStates;
-			behavior.TransitionToState(GetState(newStates));
+			State[] possibleStates = decisionSucceeded ? trueStates[i] : falseStates[i];
+
+			behaviour.TransitionToState(GetState(possibleStates));
 
 			if (NotThisState())
 				break;
 		}
 	}
 
-	private string GetState(string[] stateCollection)
+	private State GetState(State[] stateCollection)
 	{
 		int stateLength = stateCollection.Length;
 
@@ -87,29 +90,62 @@ public class State
 		}
 	}
 
-	public void InitializeState(BehaviourProcessor behaviorProcessor, int stateIndex)
+	public void InitializeState(BehaviourProcessor behaviourProcessor, int stateIndex)
 	{
-		behavior = behaviorProcessor;
+		// Get Behaviour processor
+		behaviour = behaviourProcessor;
 		this.stateIndex = stateIndex;
 
+		// Get actions and transitions length
 		actionsCount = actions.Length;
 		transitionsCount = transitions.Length;
 
+		// Check if there are any actions
 		if (actionsCount <= 0 || actions[0] == null)
-			return;
+		{
+			behaviour.enabled = false;
+			Debug.LogError(behaviour.name + "doesn't have Actions in state: " + stateName);
+		}
 
+		// Check if there are any transitions
 		if (transitionsCount <= 0 || transitions[0].decision == null)
-			return;
+		{
+			behaviour.enabled = false;
+			Debug.LogError(behaviour.name + "doesn't have Transitions in state: " + stateName);
+		}
 
+		// Get decisions length
 		decisionsCount = new int[transitionsCount];
 
 		for (int i = 0; i < transitionsCount; i++)
 			decisionsCount[i] = transitions[i].decision.Length;
+
+		// Cache all possible states
+		trueStates = new State[transitionsCount][];
+		falseStates = new State[transitionsCount][];
+
+		for (int i = 0; i < transitionsCount; i++)
+		{
+			int trueStatesLength = transitions[i].trueStates.Length;
+			int falseStatesLength = transitions[i].falseStates.Length;
+
+			State[] cachedTrueStates = new State[trueStatesLength];
+			State[] cachedFalseStates = new State[falseStatesLength];
+
+			for (int j = 0; j < trueStatesLength; j++)
+				cachedTrueStates[j] = behaviour.FindState(transitions[i].trueStates[j]);
+
+			for (int j = 0; j < falseStatesLength; j++)
+				cachedFalseStates[j] = behaviour.FindState(transitions[i].falseStates[j]);
+
+			trueStates[i] = cachedTrueStates;
+			falseStates[i] = cachedFalseStates;
+		}
 	}
 
 	private bool NotThisState()
 	{
-		if (behavior.currentState.stateName != stateName)
+		if (behaviour.currentState.stateIndex != stateIndex)
 			return true;
 		else
 			return false;
