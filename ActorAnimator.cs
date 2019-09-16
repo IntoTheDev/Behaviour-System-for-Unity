@@ -23,11 +23,11 @@ public class ActorAnimator : MonoBehaviour
 	private void UpdateAnimator()
 	{
 		animator.SetInteger(animatorParametr, behaviorProcessor.currentState.stateIndex);
-		animationState = false;
+		AnimationState = false;
 	}
 
 	// Called by an animation event
-	public void SetAnimationState(bool animationState) => this.animationState = animationState;
+	public void SetAnimationState(bool animationState) => AnimationState = animationState;
 
 	// Called by an animation event
 	public void PlayerRandomSubAnimation() => animator.SetFloat(subAnimatorParametr, Random.value);
