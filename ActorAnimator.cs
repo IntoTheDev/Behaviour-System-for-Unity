@@ -3,7 +3,7 @@ using ToolBox.Attributes;
 
 public class ActorAnimator : MonoBehaviour
 {
-	public bool animationState { get; private set; }
+	public bool AnimationState { get; private set; }
 
 	[SerializeField, BoxGroup("Components")] private Animator animator = null;
 	[SerializeField, BoxGroup("Components")] private BehaviourProcessor behaviorProcessor = null;
