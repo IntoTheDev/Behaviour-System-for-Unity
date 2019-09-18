@@ -32,7 +32,7 @@ public class BehaviourProcessor : MonoBehaviour
 
 	public void TransitionToState(State nextState)
 	{
-		if (nextState.stateIndex == currentState.stateIndex)
+		if (nextState.StateIndex == currentState.StateIndex)
 			return;
 
 		if (currentState != null)

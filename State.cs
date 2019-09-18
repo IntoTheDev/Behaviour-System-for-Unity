@@ -4,7 +4,7 @@
 public class State
 {
 	public string StateName => stateName;
-	public int stateIndex { get; private set; }
+	public int StateIndex { get; private set; }
 
 	[SerializeField] private string stateName = "";
 	[SerializeField] private Action[] actions = null;
@@ -73,15 +73,15 @@ public class State
 
 	private State GetState(State[] stateCollection)
 	{
-		int stateLength = stateCollection.Length;
+		int statesLength = stateCollection.Length;
 
-		if (stateLength == 1)
+		if (statesLength == 1)
 		{
 			return stateCollection[0];
 		}
-		else if (stateLength > 1)
+		else if (statesLength > 1)
 		{
-			int randomIndex = Random.Range(0, stateLength - 1);
+			int randomIndex = Random.Range(0, statesLength - 1);
 			return stateCollection[randomIndex];
 		}
 		else
@@ -94,7 +94,7 @@ public class State
 	{
 		// Get Behaviour processor
 		behaviour = behaviourProcessor;
-		this.stateIndex = stateIndex;
+		StateIndex = stateIndex;
 
 		// Get actions and transitions length
 		actionsCount = actions.Length;
@@ -145,7 +145,7 @@ public class State
 
 	private bool NotThisState()
 	{
-		if (behaviour.currentState.stateIndex != stateIndex)
+		if (behaviour.currentState.StateIndex != StateIndex)
 			return true;
 		else
 			return false;

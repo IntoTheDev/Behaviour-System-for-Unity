@@ -3,7 +3,7 @@ using ToolBox.Attributes;
 
 public class ActorAnimator : MonoBehaviour
 {
-	public bool AnimationState { get; private set; }
+	public bool IsAnimationEnded { get; private set; }
 
 	[SerializeField, BoxGroup("Components")] private Animator animator = null;
 	[SerializeField, BoxGroup("Components")] private BehaviourProcessor behaviorProcessor = null;
@@ -22,13 +22,11 @@ public class ActorAnimator : MonoBehaviour
 	
 	private void UpdateAnimator()
 	{
-		animator.SetInteger(animatorParametr, behaviorProcessor.currentState.stateIndex);
-		AnimationState = false;
+		animator.SetFloat(subAnimatorParametr, Random.value);
+		animator.SetInteger(animatorParametr, behaviorProcessor.currentState.StateIndex);
+		IsAnimationEnded = false;
 	}
 
 	// Called by an animation event
-	public void SetAnimationState(bool animationState) => AnimationState = animationState;
-
-	// Called by an animation event
-	public void PlayerRandomSubAnimation() => animator.SetFloat(subAnimatorParametr, Random.value);
+	public void SetAnimationState(bool animationState) => IsAnimationEnded = animationState;
 }
