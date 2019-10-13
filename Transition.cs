@@ -1,7 +1,10 @@
-﻿[System.Serializable]
-public struct Transition
+﻿namespace ToolBox.Behaviours
 {
-	public Decision[] decision;
-	public string[] trueStates;
-	public string[] falseStates;
+	[System.Serializable]
+	public struct Transition
+	{
+		public Decision[] decision;
+		public string[] trueStates;
+		public string[] falseStates;
+	}
 }

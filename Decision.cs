@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public abstract class Decision : MonoBehaviour
+namespace ToolBox.Behaviours
 {
-	public abstract void EnterDecision();
+	public abstract class Decision : MonoBehaviour
+	{
+		public abstract void EnterDecision();
 
-	public abstract bool Decide();
+		public abstract bool Decide();
 
-	public abstract void ExitDecision();
+		public abstract void ExitDecision();
+	}
 }
