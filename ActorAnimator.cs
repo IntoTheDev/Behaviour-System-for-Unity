@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using ToolBox.Attributes;
+﻿using ToolBox.Attributes;
+using ToolBox.Behaviours;
+using UnityEngine;
 
 public class ActorAnimator : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class ActorAnimator : MonoBehaviour
 		behaviorProcessor.onStateChange += UpdateAnimator;
 		enabled = behaviorProcessor.enabled == true && behaviorProcessor != null;
 	}
-	
+
 	private void UpdateAnimator()
 	{
 		animator.SetFloat(subAnimatorParametr, Random.value);
