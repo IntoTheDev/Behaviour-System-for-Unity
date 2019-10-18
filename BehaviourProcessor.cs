@@ -20,6 +20,10 @@ namespace ToolBox.Behaviours
 		private void Start()
 		{
 			statesCount = states.Length;
+
+			if (statesCount == 0 || states[0] == null)
+				return;
+
 			InitializeStates();
 
 			currentState = states[0];
@@ -61,14 +65,6 @@ namespace ToolBox.Behaviours
 
 		private void InitializeStates()
 		{
-			if (states[0] == null)
-			{
-				entityActive = false;
-				Debug.LogError(name + " doesn't have states!");
-				enabled = false;
-				return;
-			}
-
 			for (int i = 0; i < statesCount; i++)
 				states[i].InitializeState(this, i);
 		}
