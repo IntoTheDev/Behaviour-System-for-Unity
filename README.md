@@ -13,7 +13,7 @@ Decision - depending on the decisions, the entity will pass to another state.
 
 Transition - in the transitions stored decision and states of two types. True States into which an entity can pass if the decisions are true. False States to which an entity can pass if the decisions are false.
 
-Also i'm using [NaughtyAttributes](https://github.com/dbrizov/NaughtyAttributes) for some attributes.
+Also i'm using [NaughtyAttributes](https://github.com/dbrizov/NaughtyAttributes) for some attributes and [ToolBoxEditor](https://github.com/IntoTheDev/ToolBox/blob/master/ToolBoxEditor.cs) for editor methods.
 
 
 
