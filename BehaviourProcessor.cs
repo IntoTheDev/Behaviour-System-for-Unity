@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using ToolBox.Attributes;
+﻿using ToolBox.Attributes;
+using UnityEngine;
 
 namespace ToolBox.Behaviours
 {
@@ -9,11 +9,13 @@ namespace ToolBox.Behaviours
 		public delegate void OnStateChange();
 		public event OnStateChange onStateChange = delegate { };
 
-		[ReadOnly, BoxGroup("Debug")] public State currentState = null;
-		[ReorderableList, SerializeField, BoxGroup("States")] private State[] states = null;
-		[SerializeField, BoxGroup("Debug")] private bool actorActive;
+		public State CurrentState => currentState;
 
-		private int statesCount;
+		[ReorderableList, SerializeField, BoxGroup("States")] private State[] states = null;
+		[SerializeField, ReadOnly, BoxGroup("Debug")] private State currentState = null;
+		[SerializeField, BoxGroup("Debug")] private bool entityActive = true;
+
+		private int statesCount = 0;
 
 		private void Start()
 		{
@@ -27,7 +29,9 @@ namespace ToolBox.Behaviours
 
 		private void Update()
 		{
-			if (actorActive)
+#if UNITY_EDITOR
+			if (entityActive)
+#endif
 				currentState.UpdateState();
 		}
 
@@ -59,7 +63,7 @@ namespace ToolBox.Behaviours
 		{
 			if (states[0] == null)
 			{
-				actorActive = false;
+				entityActive = false;
 				Debug.LogError(name + " doesn't have states!");
 				enabled = false;
 				return;

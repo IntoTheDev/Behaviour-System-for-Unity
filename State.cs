@@ -6,7 +6,7 @@ namespace ToolBox.Behaviours
 	public class State
 	{
 		public string StateName => stateName;
-		public int StateIndex { get; private set; }
+		public int StateIndex { get; private set; } = 0;
 
 		[SerializeField] private string stateName = "";
 		[SerializeField] private Action[] actions = null;
@@ -15,10 +15,10 @@ namespace ToolBox.Behaviours
 		private State[][] trueStates = null;
 		private State[][] falseStates = null;
 
-		private BehaviourProcessor behaviour;
-		private int actionsCount;
-		private int transitionsCount;
-		private int[] decisionsCount;
+		private BehaviourProcessor behaviour = null;
+		private int actionsCount = 0;
+		private int transitionsCount = 0;
+		private int[] decisionsCount = null;
 
 		public void EnterState()
 		{
@@ -147,7 +147,7 @@ namespace ToolBox.Behaviours
 
 		private bool NotThisState()
 		{
-			if (behaviour.currentState.StateIndex != StateIndex)
+			if (behaviour.CurrentState.StateIndex != StateIndex)
 				return true;
 			else
 				return false;
