@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace ToolBox.Behaviours
 {
@@ -9,8 +10,10 @@ namespace ToolBox.Behaviours
 		public int StateIndex { get; private set; } = 0;
 
 		[SerializeField] private string stateName = "";
+		[SerializeField] private UnityEvent enterEvents = null;
 		[SerializeField] private Action[] actions = null;
 		[SerializeField] private Transition[] transitions = null;
+		[SerializeField] private UnityEvent exitEvents = null;
 
 		private State[][] trueStates = null;
 		private State[][] falseStates = null;
@@ -22,12 +25,19 @@ namespace ToolBox.Behaviours
 
 		public void EnterState()
 		{
+			enterEvents?.Invoke();
+
 			for (int i = 0; i < actionsCount; i++)
 				actions[i].EnterAction();
 
 			for (int i = 0; i < transitionsCount; i++)
-				for (int j = 0; j < decisionsCount[i]; j++)
+			{
+				int count = decisionsCount[i];
+
+				for (int j = 0; j < count; j++)
 					transitions[i].decision[j].EnterDecision();
+			}
+
 		}
 
 		public void UpdateState()
@@ -38,12 +48,18 @@ namespace ToolBox.Behaviours
 
 		public void ExitState()
 		{
+			exitEvents?.Invoke();
+
 			for (int i = 0; i < actionsCount; i++)
 				actions[i].ExitAction();
 
 			for (int i = 0; i < transitionsCount; i++)
-				for (int j = 0; j < decisionsCount[i]; j++)
+			{
+				int count = decisionsCount[i];
+
+				for (int j = 0; j < count; j++)
 					transitions[i].decision[j].ExitDecision();
+			}
 		}
 
 		private void PerformActions()
@@ -57,8 +73,9 @@ namespace ToolBox.Behaviours
 			for (int i = 0; i < transitionsCount; i++)
 			{
 				bool decisionSucceeded = true;
+				int count = decisionsCount[i];
 
-				for (int j = 0; j < decisionsCount[i]; j++)
+				for (int j = 0; j < count; j++)
 				{
 					bool currentDecision = transitions[i].decision[j].Decide();
 					decisionSucceeded = currentDecision && decisionSucceeded;
