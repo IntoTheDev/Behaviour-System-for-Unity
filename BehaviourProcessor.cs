@@ -7,7 +7,7 @@ namespace ToolBox.Behaviours
 	public class BehaviourProcessor : MonoBehaviour
 	{
 		public delegate void OnStateChange();
-		public event OnStateChange onStateChange = delegate { };
+		public event OnStateChange onStateChange = null;
 
 		public State CurrentState => currentState;
 
@@ -28,7 +28,7 @@ namespace ToolBox.Behaviours
 
 			currentState = states[0];
 			currentState.EnterState();
-			onStateChange();
+			onStateChange?.Invoke();
 		}
 
 		private void Update()

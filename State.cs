@@ -85,7 +85,7 @@ namespace ToolBox.Behaviours
 
 				behaviour.TransitionToState(GetState(possibleStates));
 
-				if (NotThisState())
+				if (behaviour.CurrentState.StateIndex != StateIndex)
 					break;
 			}
 		}
@@ -160,14 +160,6 @@ namespace ToolBox.Behaviours
 				trueStates[i] = cachedTrueStates;
 				falseStates[i] = cachedFalseStates;
 			}
-		}
-
-		private bool NotThisState()
-		{
-			if (behaviour.CurrentState.StateIndex != StateIndex)
-				return true;
-			else
-				return false;
 		}
 	}
 }
