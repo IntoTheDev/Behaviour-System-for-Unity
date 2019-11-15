@@ -1,13 +1,13 @@
 ﻿using ToolBox.Attributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ToolBox.Behaviours
 {
 	[DisallowMultipleComponent]
 	public class BehaviourProcessor : MonoBehaviour
 	{
-		public delegate void OnStateChange();
-		public event OnStateChange onStateChange = null;
+		public UnityAction<State> OnStateChange;
 
 		public State CurrentState => currentState;
 
@@ -28,7 +28,7 @@ namespace ToolBox.Behaviours
 
 			currentState = states[0];
 			currentState.EnterState();
-			onStateChange?.Invoke();
+			OnStateChange?.Invoke(currentState);
 		}
 
 		private void Update()
@@ -41,6 +41,26 @@ namespace ToolBox.Behaviours
 
 		public void TransitionToState(State nextState)
 		{
+			InternalTransition(nextState);
+		}
+
+		public void TransitionToState(string name)
+		{
+			State nextState = FindState(name);
+			InternalTransition(nextState);
+		}
+
+		public State FindState(string newStateName)
+		{
+			for (int i = 0; i < statesCount; i++)
+				if (newStateName == states[i].StateName)
+					return states[i];
+
+			return null;
+		}
+
+		private void InternalTransition(State nextState)
+		{
 			if (nextState.StateIndex == currentState.StateIndex)
 				return;
 
@@ -51,16 +71,7 @@ namespace ToolBox.Behaviours
 
 			currentState.EnterState();
 
-			onStateChange();
-		}
-
-		public State FindState(string newStateName)
-		{
-			for (int i = 0; i < statesCount; i++)
-				if (newStateName == states[i].StateName)
-					return states[i];
-
-			return null;
+			OnStateChange?.Invoke(currentState);
 		}
 
 		private void InitializeStates()

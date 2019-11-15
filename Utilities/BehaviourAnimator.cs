@@ -19,14 +19,14 @@ namespace ToolBox.Behaviours.Utilities
 			animatorParametr = Animator.StringToHash("State");
 			subAnimatorParametr = Animator.StringToHash("Blend");
 
-			behaviorProcessor.onStateChange += UpdateAnimator;
+			behaviorProcessor.OnStateChange += UpdateAnimator;
 			enabled = behaviorProcessor.enabled == true && behaviorProcessor != null;
 		}
 
-		private void UpdateAnimator()
+		private void UpdateAnimator(State state)
 		{
 			animator.SetFloat(subAnimatorParametr, Random.value);
-			animator.SetInteger(animatorParametr, behaviorProcessor.CurrentState.StateIndex);
+			animator.SetInteger(animatorParametr, state.StateIndex);
 			IsAnimationEnded = false;
 		}
 
