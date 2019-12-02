@@ -26,7 +26,7 @@ namespace ToolBox.Behaviours.Utilities
 		private void UpdateAnimator(State state)
 		{
 			animator.SetFloat(subAnimatorParametr, Random.value);
-			animator.SetInteger(animatorParametr, state.StateIndex);
+			animator.SetInteger(animatorParametr, state.Index);
 			IsAnimationEnded = false;
 		}
 
