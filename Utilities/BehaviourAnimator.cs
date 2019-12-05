@@ -1,12 +1,13 @@
 ﻿using ToolBox.Attributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ToolBox.Behaviours.Utilities
 {
-	[RequireComponent(typeof(BehaviourProcessor), typeof(Animator)), DisallowMultipleComponent]
+	[RequireComponent(typeof(Animator)), DisallowMultipleComponent]
 	public class BehaviourAnimator : MonoBehaviour
 	{
-		public bool IsAnimationEnded { get; private set; } = false;
+		[SerializeField, BoxGroup("Data"), ReorderableList] private AnimationEvents[] animationEvents = null;
 
 		[SerializeField, BoxGroup("Components")] private Animator animator = null;
 		[SerializeField, BoxGroup("Components")] private BehaviourProcessor behaviorProcessor = null;
@@ -27,9 +28,21 @@ namespace ToolBox.Behaviours.Utilities
 		{
 			animator.SetFloat(subAnimatorParametr, Random.value);
 			animator.SetInteger(animatorParametr, state.Index);
-			IsAnimationEnded = false;
 		}
 
-		public void SetAnimationState(bool animationState) => IsAnimationEnded = animationState;
+		public void CallEvents(int index) => animationEvents[index].Events?.Invoke();
+
+		[System.Serializable]
+		private struct AnimationEvents
+		{
+			public UnityEvent Events => events;
+
+
+#if UNITY_EDITOR
+			[SerializeField] private string editorName;
+#endif
+
+			[SerializeField] private UnityEvent events;
+		}
 	}
 }

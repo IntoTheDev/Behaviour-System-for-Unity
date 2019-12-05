@@ -34,7 +34,13 @@ namespace ToolBox.Behaviours
 			OnStateChange?.Invoke(currentState);
 		}
 
-		private void OnValidate() => statesCount = states.Length;
+		private void OnValidate()
+		{
+			statesCount = states.Length;
+
+			for (int i = 0; i < statesCount; i++)
+				states[i].SetIndex(i);
+		}
 
 		public void TransitionToState(int index)
 		{
@@ -42,6 +48,8 @@ namespace ToolBox.Behaviours
 			if (!entityActive)
 				return;
 #endif
+			if (index == StateIndex)
+				return;
 
 			State nextState = states[index];
 
