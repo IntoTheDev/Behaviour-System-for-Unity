@@ -1,4 +1,4 @@
-﻿using ToolBox.Attributes;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 

@@ -1,4 +1,4 @@
-﻿using ToolBox.Attributes;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace ToolBox.Behaviours.Utilities
@@ -6,8 +6,8 @@ namespace ToolBox.Behaviours.Utilities
 	[DisallowMultipleComponent, RequireComponent(typeof(BehaviourProcessor))]
 	public class BehaviourRandomTransition : MonoBehaviour
 	{
-		[SerializeField] private BehaviourProcessor behaviourProcessor = null;
-		[SerializeField, ReorderableList] private RandomTransition[] randomTransitions = default;
+		[SerializeField, Required] private BehaviourProcessor behaviourProcessor = null;
+		[SerializeField, ListDrawerSettings(NumberOfItemsPerPage = 1)] private RandomTransition[] randomTransitions = default;
 
 		private void Start()
 		{

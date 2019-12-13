@@ -1,4 +1,4 @@
-﻿using ToolBox.Attributes;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,15 +7,16 @@ namespace ToolBox.Behaviours
 	[DisallowMultipleComponent]
 	public class BehaviourProcessor : MonoBehaviour
 	{
-		public UnityAction<State> OnStateChange;
+		[HideInInspector] public UnityAction<State> OnStateChange;
 
 		public State CurrentState => currentState;
 		public int StateIndex { get; private set; }
 		public int StatesCount => statesCount;
 
-		[ReorderableList, SerializeField, BoxGroup("Data")] private State[] states = null;
-		[SerializeField, ReadOnly, BoxGroup("Debug")] private State currentState = null;
-		[SerializeField, BoxGroup("Debug")] private bool entityActive = true;
+		[SerializeField, FoldoutGroup("Data"), ListDrawerSettings(NumberOfItemsPerPage = 1, Expanded = true)] private State[] states = null;
+
+		[SerializeField, FoldoutGroup("Debug"), ReadOnly] private State currentState = null;
+		[SerializeField, FoldoutGroup("Debug")] private bool entityActive = true;
 
 		private int statesCount = 0;
 

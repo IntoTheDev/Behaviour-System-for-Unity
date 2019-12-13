@@ -1,4 +1,4 @@
-﻿using ToolBox.Attributes;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,10 +7,10 @@ namespace ToolBox.Behaviours.Utilities
 	[RequireComponent(typeof(Animator)), DisallowMultipleComponent]
 	public class BehaviourAnimator : MonoBehaviour
 	{
-		[SerializeField, BoxGroup("Data"), ReorderableList] private AnimationEvents[] animationEvents = null;
+		[SerializeField, FoldoutGroup("Data"), ListDrawerSettings(NumberOfItemsPerPage = 1)] private AnimationEvents[] animationEvents = null;
 
-		[SerializeField, BoxGroup("Components")] private Animator animator = null;
-		[SerializeField, BoxGroup("Components")] private BehaviourProcessor behaviorProcessor = null;
+		[SerializeField, FoldoutGroup("Components"), Required] private Animator animator = null;
+		[SerializeField, FoldoutGroup("Components"), Required] private BehaviourProcessor behaviorProcessor = null;
 
 		private int animatorParametr = 0;
 		private int subAnimatorParametr = 0;
