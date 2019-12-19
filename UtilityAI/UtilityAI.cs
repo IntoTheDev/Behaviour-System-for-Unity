@@ -18,16 +18,18 @@ namespace ToolBox.Behaviours.UtilityAI
 			scores = new float[actionsCount];
 		}
 
-		[Button("Check", Expanded = true)]
-		public void ChooseBehaviour()
+		[Button("Conditions", Expanded = true)]
+		public void ProcessConditions()
 		{
-			for (int scoreIndex = 0; scoreIndex < actionsCount; scoreIndex++)
-				scores[scoreIndex] = 0f;
+			int bestIndex = 0;
+			float bestScore = 0f;
+			float totalScore = 0f;
 
 			for (int actionIndex = 0; actionIndex < actionsCount; actionIndex++)
 			{
 				Action action = actions[actionIndex];
 				int scorersCount = action.Scorers.Length;
+				scores[actionIndex] = 0f;
 
 				for (int scorerIndex = 0; scorerIndex < scorersCount; scorerIndex++)
 				{
@@ -40,21 +42,44 @@ namespace ToolBox.Behaviours.UtilityAI
 					if (result)
 						scores[actionIndex] += scorer.Score;
 				}
-			}
 
-			int bestIndex = 0;
-			float bestScore = scores[bestIndex];
+				float score = scores[actionIndex];
+				totalScore += score;
 
-			for (int i = 1; i < actionsCount; i++)
-			{
-				if (scores[i] > bestScore)
+				if (score > bestScore)
 				{
-					bestIndex = i;
-					bestScore = scores[bestIndex];
-				}	
+					bestIndex = actionIndex;
+					bestScore = score;
+				}
 			}
 
-			actions[bestIndex].OnSuccess?.Invoke();
+			if (totalScore != 0f)
+				actions[bestIndex].OnSuccess?.Invoke();
+		}
+
+		[Button("Condition", Expanded = true)]
+		public void ProcessCondition(int index)
+		{
+			Action action = actions[index];
+			Scorer[] scorers = action.Scorers;
+			int count = scorers.Length;
+
+			for (int i = 0; i < count; i++)
+			{
+				Scorer scorer = action.Scorers[i];
+				bool result = scorer.Execute();
+				bool isNot = scorer.IsNot;
+
+				result = (result && !isNot) || (!result && isNot);
+
+				if (!result)
+				{
+					action.OnFailure?.Invoke();
+					return;
+				}
+			}
+
+			action.OnSuccess?.Invoke();
 		}
 
 		[System.Serializable]
@@ -62,11 +87,13 @@ namespace ToolBox.Behaviours.UtilityAI
 		{
 			public Scorer[] Scorers => scorers;
 			public UnityEvent OnSuccess => onSuccess;
+			public UnityEvent OnFailure => onFailure;
 
 			[SerializeField] private string debugName;
 			[SerializeField, ListDrawerSettings(Expanded = true, NumberOfItemsPerPage = 1, DraggableItems = false), TabGroup("Scorers")] private Scorer[] scorers;
 
 			[SerializeField, TabGroup("Events")] private UnityEvent onSuccess;
+			[SerializeField, TabGroup("Events")] private UnityEvent onFailure;
 		}
 	}
 }

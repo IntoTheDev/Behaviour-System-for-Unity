@@ -13,7 +13,7 @@ namespace ToolBox.Behaviours
 		public int StateIndex { get; private set; }
 		public int StatesCount => statesCount;
 
-		[SerializeField, FoldoutGroup("Data"), ListDrawerSettings(NumberOfItemsPerPage = 1, Expanded = true)] private State[] states = null;
+		[SerializeField, FoldoutGroup("Data"), ListDrawerSettings(NumberOfItemsPerPage = 1, Expanded = true, DraggableItems = false)] private State[] states = null;
 
 		[SerializeField, FoldoutGroup("Debug"), ReadOnly] private State currentState = null;
 		[SerializeField, FoldoutGroup("Debug")] private bool entityActive = true;
@@ -37,6 +37,9 @@ namespace ToolBox.Behaviours
 
 		private void OnValidate()
 		{
+			if (states == null)
+				return;
+
 			statesCount = states.Length;
 
 			for (int i = 0; i < statesCount; i++)

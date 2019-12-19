@@ -7,7 +7,7 @@ namespace ToolBox.Behaviours.Utilities
 	[RequireComponent(typeof(Animator)), DisallowMultipleComponent]
 	public class BehaviourAnimator : MonoBehaviour
 	{
-		[SerializeField, FoldoutGroup("Data"), ListDrawerSettings(NumberOfItemsPerPage = 1)] private AnimationEvents[] animationEvents = null;
+		[SerializeField, FoldoutGroup("Data"), ListDrawerSettings(NumberOfItemsPerPage = 1, Expanded = true, DraggableItems = false)] private AnimationEvents[] animationEvents = null;
 
 		[SerializeField, FoldoutGroup("Components"), Required] private Animator animator = null;
 		[SerializeField, FoldoutGroup("Components"), Required] private BehaviourProcessor behaviorProcessor = null;
