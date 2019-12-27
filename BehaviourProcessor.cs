@@ -1,70 +1,70 @@
 ﻿using Sirenix.OdinInspector;
+using Sirenix.Serialization;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace ToolBox.Behaviours
 {
 	[DisallowMultipleComponent]
-	public class BehaviourProcessor : MonoBehaviour
+	public class BehaviourProcessor : SerializedMonoBehaviour
 	{
-		[HideInInspector] public UnityAction<State> OnStateChange;
+		[OdinSerialize, FoldoutGroup("Context"), ListDrawerSettings(
+			DraggableItems = false,
+			NumberOfItemsPerPage = 1,
+			Expanded = true)] private Dictionary<ContextKey, SharedData<object>> context = null;
 
-		public State CurrentState => currentState;
-		public int StateIndex { get; private set; }
-		public int StatesCount => statesCount;
+		[OdinSerialize, ListDrawerSettings(
+			NumberOfItemsPerPage = 1,
+			Expanded = true,
+			DraggableItems = false), FoldoutGroup("Data")] private State[] states = null;
 
-		[SerializeField, FoldoutGroup("Data"), ListDrawerSettings(NumberOfItemsPerPage = 1, Expanded = true, DraggableItems = false)] private State[] states = null;
+#if UNITY_EDITOR
+		[SerializeField, ReadOnly, FoldoutGroup("Debug")] private string currentStateName = "State";
+#endif
 
-		[SerializeField, FoldoutGroup("Debug"), ReadOnly] private State currentState = null;
-		[SerializeField, FoldoutGroup("Debug")] private bool entityActive = true;
+		[SerializeField, ReadOnly, FoldoutGroup("Debug")] private int currentIndex = 0;
 
-		private int statesCount = 0;
+		private State currentState = null;
 
 		private void Start()
 		{
-			statesCount = states.Length;
-
-			if (statesCount == 0 || states[0] == null)
+			if (states.Length == 0 || states[0] == null)
+			{
+				enabled = false;
 				return;
+			}
 
-			for (int i = 0; i < statesCount; i++)
-				states[i].SetIndex(i);
+			for (int i = 0; i < states.Length; i++)
+				states[i].Initialize(this);
 
 			currentState = states[0];
-			currentState.EnterState();
-			OnStateChange?.Invoke(currentState);
-		}
+			currentState.OnEnter();
 
-		private void OnValidate()
-		{
-			if (states == null)
-				return;
-
-			statesCount = states.Length;
-
-			for (int i = 0; i < statesCount; i++)
-				states[i].SetIndex(i);
+#if UNITY_EDITOR
+			currentStateName = currentState.StateName;
+#endif
 		}
 
 		public void TransitionToState(int index)
 		{
+			if (index == currentIndex || index >= states.Length || index < 0)
+				return;
+
+			currentState.OnExit();
+
+			currentState = states[index];
+			currentState.OnEnter();
+			currentIndex = index;
+
 #if UNITY_EDITOR
-			if (!entityActive)
-				return;
+			currentStateName = currentState.StateName;
 #endif
-			if (index == StateIndex)
-				return;
+		}
 
-			State nextState = states[index];
-
-			currentState.ExitState();
-
-			currentState = nextState;
-			StateIndex = index;
-
-			currentState.EnterState();
-
-			OnStateChange?.Invoke(currentState);
+		public SharedData<object> GetData(ContextKey contextKey)
+		{
+			context.TryGetValue(contextKey, out SharedData<object> value);
+			return value;
 		}
 	}
 }

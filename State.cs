@@ -1,4 +1,6 @@
 ﻿using Sirenix.OdinInspector;
+using ToolBox.Behaviours.Actions;
+using ToolBox.Behaviours.Composites;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,20 +9,54 @@ namespace ToolBox.Behaviours
 	[System.Serializable]
 	public class State
 	{
-		public int Index => index;
-
 #if UNITY_EDITOR
-		[SerializeField] private string debugName = "";
+		public string StateName => stateName;
+
+		[SerializeField] private string stateName = "State";
 #endif
-		[SerializeField, ReadOnly] private int index = 0;
 
-		[SerializeField] private UnityEvent enterEvents = null;
-		[SerializeField] private UnityEvent exitEvents = null;
+		[SerializeField, TabGroup("Events")] private UnityEvent onEnter = null;
+		[SerializeField, TabGroup("Events")] private UnityEvent onExit = null;
 
-		public void EnterState() => enterEvents?.Invoke();
+		[SerializeField, TabGroup("Composites"), ListDrawerSettings(
+			NumberOfItemsPerPage = 1,
+			Expanded = true,
+			DraggableItems = false)] private Composite[] composites = null;
 
-		public void ExitState() => exitEvents?.Invoke();
+		[SerializeField, TabGroup("Actions"), ListDrawerSettings(
+			NumberOfItemsPerPage = 1,
+			Expanded = true,
+			DraggableItems = false)] private Action[] actions = null;
 
-		public void SetIndex(int index) => this.index = index;
+		public void Initialize(BehaviourProcessor behaviour)
+		{
+			for (int i = 0; i < composites.Length; i++)
+				composites[i].Initialize(behaviour);
+
+			for (int i = 0; i < actions.Length; i++)
+				actions[i].Initialize(behaviour);
+		}
+
+		public void OnEnter()
+		{
+			onEnter?.Invoke();
+
+			for (int i = 0; i < composites.Length; i++)
+				composites[i].OnEnter();
+
+			for (int i = 0; i < actions.Length; i++)
+				actions[i].OnEnter();
+		}
+
+		public void OnExit()
+		{
+			onExit?.Invoke();
+
+			for (int i = 0; i < composites.Length; i++)
+				composites[i].OnExit();
+
+			for (int i = 0; i < actions.Length; i++)
+				actions[i].OnExit();
+		}
 	}
 }
