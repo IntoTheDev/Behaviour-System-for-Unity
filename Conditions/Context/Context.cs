@@ -16,18 +16,21 @@ namespace ToolBox.Behaviours.Conditions
 
 		private CoroutineHandle coroutineHandle = default;
 		private float time = 0f;
+		private GameObject cachedObject = null;
 
 		public override void Initialize(Composite composite, BehaviourProcessor behaviour)
 		{
 			base.Initialize(composite, behaviour);
+
 			time = updateRate.GetRate();
 			sharedData = behaviour.GetData(contextKey);
+			cachedObject = behaviour.gameObject;
 		}
 
 		public override void OnEnter()
 		{
 			Process();
-			coroutineHandle = Timing.RunCoroutine(CallRepeating());
+			coroutineHandle = Timing.RunCoroutine(CallRepeating().CancelWith(cachedObject));
 		}
 
 		public override void OnExit() =>

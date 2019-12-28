@@ -10,6 +10,9 @@ namespace ToolBox.Behaviours.Composites
 
 			if (result)
 				onSuccess?.Invoke();
+
+			if (falseCount >= conditionsCount)
+				onFailure?.Invoke();
 		}
 	}
 }

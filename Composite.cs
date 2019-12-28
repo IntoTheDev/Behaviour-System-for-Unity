@@ -23,6 +23,8 @@ namespace ToolBox.Behaviours.Composites
 		private List<Condition> trueConditions = null;
 		private List<Condition> falseConditions = null;
 
+		protected int falseCount = 0;
+
 		public virtual void Initialize(BehaviourProcessor behaviour)
 		{
 			conditionsCount = conditions.Length;
@@ -43,7 +45,10 @@ namespace ToolBox.Behaviours.Composites
 					trueConditions.Add(condition);
 
 					if (falseConditions.Contains(condition))
+					{
 						falseConditions.Remove(condition);
+						falseCount--;
+					}
 
 					currentCount++;
 				}
@@ -59,6 +64,8 @@ namespace ToolBox.Behaviours.Composites
 						trueConditions.Remove(condition);
 						currentCount--;
 					}
+
+					falseCount++;
 				}
 			}
 		}
@@ -67,6 +74,8 @@ namespace ToolBox.Behaviours.Composites
 		{
 			trueConditions.Clear();
 			falseConditions.Clear();
+			currentCount = 0;
+			falseCount = 0;
 
 			for (int i = 0; i < conditionsCount; i++)
 				conditions[i].OnEnter();
