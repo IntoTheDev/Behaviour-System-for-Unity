@@ -12,7 +12,7 @@ namespace ToolBox.Behaviours.Conditions
 		private CoroutineHandle coroutineHandle = default;
 
 		public override void OnEnter() =>
-			coroutineHandle = Timing.RunCoroutine(WaitTime().CancelWith(behaviour.gameObject));
+			coroutineHandle = Timing.RunCoroutine(WaitTime().CancelWith(cachedObject));
 
 		public override void OnExit() =>
 			Timing.KillCoroutines(coroutineHandle);

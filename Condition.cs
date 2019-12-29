@@ -6,17 +6,20 @@ namespace ToolBox.Behaviours.Conditions
 {
 	public abstract class Condition
 	{
-		public bool IsNot => isNot;
-
 		[SerializeField, FoldoutGroup("Setup")] private bool isNot = false;
 
 		protected BehaviourProcessor behaviour = null;
+		protected Transform cachedTransform = null;
+		protected GameObject cachedObject = null;
+
 		private Composite composite = null;
 
 		public virtual void Initialize(Composite composite, BehaviourProcessor behaviour)
 		{
 			this.composite = composite;
 			this.behaviour = behaviour;
+			cachedTransform = behaviour.transform;
+			cachedObject = behaviour.gameObject;
 		}
 
 		public abstract void OnEnter();
@@ -25,7 +28,7 @@ namespace ToolBox.Behaviours.Conditions
 
 		public void ProcessCondition(bool result)
 		{
-			result = (result && !IsNot) || (!result && IsNot);
+			result = (result && !isNot) || (!result && isNot);
 			composite.ProcessCondition(result, this);
 		}
 	}
