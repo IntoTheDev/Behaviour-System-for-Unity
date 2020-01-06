@@ -13,7 +13,7 @@ namespace ToolBox.Behaviours.Conditions
 			movementInput = actorMovement.MovementInput;
 
 			if (movementInput != null)
-				RunTask();
+				base.OnEnter();
 
 			actorMovement.OnInputChange += GetInput;
 		}
@@ -21,7 +21,7 @@ namespace ToolBox.Behaviours.Conditions
 		public override void OnExit()
 		{
 			actorMovement.OnInputChange -= GetInput;
-			StopTask();
+			base.OnExit();
 		}
 
 		private void GetInput(IMovementInput movementInput)

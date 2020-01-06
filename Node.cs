@@ -1,5 +1,6 @@
 ﻿using MEC;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,46 +19,62 @@ namespace ToolBox.Behaviours
 
 		private IEnumerator<float> task = null;
 		private CoroutineHandle taskCoroutine = default;
+		private Action internalRun = null;
+		private Action internalStop = null;
 
 		protected void InitializeNode()
 		{
 			switch (updateType)
 			{
+				case UpdateType.Once:
+					internalRun = InternalRunTaskOnce;
+					internalStop = InternalStopEmptyTask;
+					break;
+
 				case UpdateType.Frame:
 					task = FrameUpdate();
+					internalRun = InternalRunTask;
+					internalStop = InternalStopTask;
 					break;
 
 				case UpdateType.Seconds:
 					task = SecondsUpdate();
 					segment = Segment.Update;
+					internalRun = InternalRunTask;
+					internalStop = InternalStopTask;
 					break;
 
 				case UpdateType.Delayed:
 					task = DelayedUpdate();
 					segment = Segment.Update;
+					internalRun = InternalRunTask;
+					internalStop = InternalStopTask;
 					break;
 			}
 		}
 
-		protected abstract void Task();
+		public virtual void OnEnter() =>
+			RunTask();
 
-		public abstract void OnEnter();
+		public virtual void OnExit() =>
+			StopTask();
 
-		public abstract void OnExit();
+		protected void RunTask() =>
+			internalRun();
 
-		public void RunTask()
-		{
-			if (updateType != UpdateType.Once)
-				taskCoroutine = Timing.RunCoroutine(task, segment);
-			else
-				Task();
-		}
+		protected void StopTask() =>
+			internalStop();
 
-		public void StopTask()
-		{
-			if (updateType != UpdateType.Once)
-				Timing.KillCoroutines(taskCoroutine);
-		}
+		private void InternalRunTask() =>
+			taskCoroutine = Timing.RunCoroutine(task, segment);
+
+		private void InternalRunTaskOnce() =>
+			Task();
+
+		private void InternalStopTask() =>
+			Timing.KillCoroutines(taskCoroutine);
+
+		private void InternalStopEmptyTask() { }
 
 		private IEnumerator<float> FrameUpdate()
 		{
@@ -82,8 +99,11 @@ namespace ToolBox.Behaviours
 		private IEnumerator<float> DelayedUpdate()
 		{
 			yield return Timing.WaitForSeconds(delay);
+
 			Task();
 		}
+
+		protected abstract void Task();
 
 		private enum UpdateType
 		{

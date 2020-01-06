@@ -14,8 +14,7 @@ namespace ToolBox.Behaviours.Composites
 		[SerializeField, ListDrawerSettings(
 				NumberOfItemsPerPage = 1,
 				Expanded = true,
-				DraggableItems = false), TabGroup("Data")]
-		private Condition[] conditions = null;
+				DraggableItems = false), TabGroup("Data")] private Condition[] conditions = null;
 
 		protected int conditionsCount = 0;
 		protected int currentCount = 0;
@@ -74,6 +73,7 @@ namespace ToolBox.Behaviours.Composites
 		{
 			trueConditions.Clear();
 			falseConditions.Clear();
+
 			currentCount = 0;
 			falseCount = 0;
 
