@@ -1,22 +1,14 @@
-﻿using UnityEngine;
-
-namespace ToolBox.Behaviours.Actions
+﻿namespace ToolBox.Behaviours.Actions
 {
-	public abstract class Action
+	public abstract class Action : Node
 	{
-		protected BehaviourProcessor behaviour = null;
-		protected Transform cachedTrasform = null;
-		protected GameObject cachedObject = null;
-
 		public virtual void Initialize(BehaviourProcessor behaviour)
 		{
+			InitializeNode();
+
 			this.behaviour = behaviour;
-			cachedTrasform = behaviour.transform;
+			cachedTransform = behaviour.transform;
 			cachedObject = behaviour.gameObject;
 		}
-
-		public abstract void OnEnter();
-
-		public abstract void OnExit();
 	}
 }

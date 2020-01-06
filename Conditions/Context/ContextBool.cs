@@ -5,7 +5,7 @@ namespace ToolBox.Behaviours.Conditions
 {
 	public class ContextBool : Context
 	{
-		public override void Process() =>
+		protected override void Task() =>
 			ProcessCondition((bool)sharedData.Value);
 	}
 }

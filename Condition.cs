@@ -4,27 +4,21 @@ using UnityEngine;
 
 namespace ToolBox.Behaviours.Conditions
 {
-	public abstract class Condition
+	public abstract class Condition : Node          
 	{
 		[SerializeField, FoldoutGroup("Setup")] private bool isNot = false;
-
-		protected BehaviourProcessor behaviour = null;
-		protected Transform cachedTransform = null;
-		protected GameObject cachedObject = null;
 
 		private Composite composite = null;
 
 		public virtual void Initialize(Composite composite, BehaviourProcessor behaviour)
 		{
+			InitializeNode();
+
 			this.composite = composite;
 			this.behaviour = behaviour;
 			cachedTransform = behaviour.transform;
-			cachedObject = behaviour.gameObject;
+			cachedObject = behaviour.gameObject; 
 		}
-
-		public abstract void OnEnter();
-
-		public abstract void OnExit();
 
 		public void ProcessCondition(bool result)
 		{

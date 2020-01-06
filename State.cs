@@ -58,5 +58,19 @@ namespace ToolBox.Behaviours
 			for (int i = 0; i < actions.Length; i++)
 				actions[i].OnExit();
 		}
+
+		public T GetAction<T>() where T : Action
+		{
+			for (int i = 0; i < actions.Length; i++)
+			{
+				Action action = actions[i];
+				object type = action.GetType();
+
+				if (type.Equals(typeof(T)))
+					return action as T;
+			}
+
+			return null;
+		}
 	}
 }

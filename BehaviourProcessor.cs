@@ -20,11 +20,16 @@ namespace ToolBox.Behaviours
 
 #if UNITY_EDITOR
 		[SerializeField, ReadOnly, FoldoutGroup("Debug")] private string currentStateName = "State";
+		[SerializeField, ReadOnly, FoldoutGroup("Debug")] private string previousStateName = "State";
 #endif
 
 		[SerializeField, ReadOnly, FoldoutGroup("Debug")] private int currentIndex = 0;
+		[SerializeField, ReadOnly, FoldoutGroup("Debug")] private int previousIndex = 0;
 
 		private State currentState = null;
+		private State previousState = null;
+
+		private bool isInitialized = false;
 
 		private void Start()
 		{
@@ -45,12 +50,25 @@ namespace ToolBox.Behaviours
 #endif
 		}
 
+		private void OnEnable()
+		{
+			if (isInitialized)
+				currentState.OnEnter();
+
+			isInitialized = true;
+		}
+
+		private void OnDisable() =>
+			currentState.OnExit();
+
 		public void TransitionToState(int index)
 		{
 			if (index == currentIndex || index >= states.Length || index < 0)
 				return;
 
-			currentState.OnExit();
+			previousState = currentState;
+			previousState.OnExit();
+			previousIndex = currentIndex;
 
 			currentState = states[index];
 			currentState.OnEnter();
@@ -58,8 +76,12 @@ namespace ToolBox.Behaviours
 
 #if UNITY_EDITOR
 			currentStateName = currentState.StateName;
+			previousStateName = previousState.StateName;
 #endif
 		}
+
+		public void TransitionToPreviousState() =>
+			TransitionToState(previousIndex);
 
 		public SharedData<object> GetData(ContextKey contextKey)
 		{
