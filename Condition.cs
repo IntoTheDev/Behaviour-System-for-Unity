@@ -20,7 +20,7 @@ namespace ToolBox.Behaviours.Conditions
 			cachedObject = behaviour.gameObject; 
 		}
 
-		public void ProcessCondition(bool result)
+		protected void ProcessCondition(bool result)
 		{
 			result = (result && !isNot) || (!result && isNot);
 			composite.ProcessCondition(result, this);
