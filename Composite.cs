@@ -1,4 +1,4 @@
-﻿using Sirenix.OdinInspector;
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using ToolBox.Behaviours.Conditions;
 using UnityEngine;
@@ -37,35 +37,27 @@ namespace ToolBox.Behaviours.Composites
 
 		public virtual void ProcessCondition(bool result, Condition condition)
 		{
-			if (result)
+			if (result && !trueConditions.Contains(condition))
 			{
-				if (!trueConditions.Contains(condition))
+				trueConditions.Add(condition);
+
+				if (falseConditions.Contains(condition))
 				{
-					trueConditions.Add(condition);
-
-					if (falseConditions.Contains(condition))
-					{
-						falseConditions.Remove(condition);
-						falseCount--;
-					}
-
-					currentCount++;
+					falseConditions.Remove(condition);
+					falseCount--;
 				}
 			}
-			else
+			else if (!falseConditions.Contains(condition))
 			{
-				if (!falseConditions.Contains(condition))
+				falseConditions.Add(condition);
+
+				if (trueConditions.Contains(condition))
 				{
-					falseConditions.Add(condition);
-
-					if (trueConditions.Contains(condition))
-					{
-						trueConditions.Remove(condition);
-						currentCount--;
-					}
-
-					falseCount++;
+					trueConditions.Remove(condition);
+					currentCount--;
 				}
+
+				falseCount++;
 			}
 		}
 
