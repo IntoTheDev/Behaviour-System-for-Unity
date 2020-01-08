@@ -24,7 +24,7 @@ namespace ToolBox.Behaviours.Composites
 
 		protected int falseCount = 0;
 
-		public virtual void Initialize(BehaviourProcessor behaviour)
+		public void Initialize(BehaviourProcessor behaviour)
 		{
 			conditionsCount = conditions.Length;
 
@@ -69,7 +69,7 @@ namespace ToolBox.Behaviours.Composites
 			}
 		}
 
-		public virtual void OnEnter()
+		public void OnEnter()
 		{
 			trueConditions.Clear();
 			falseConditions.Clear();
@@ -81,7 +81,7 @@ namespace ToolBox.Behaviours.Composites
 				conditions[i].OnEnter();
 		}
 
-		public virtual void OnExit()
+		public void OnExit()
 		{
 			for (int i = 0; i < conditionsCount; i++)
 				conditions[i].OnExit();
