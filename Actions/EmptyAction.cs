@@ -1,15 +1,11 @@
-﻿namespace ToolBox.Behaviours.Actions
+namespace ToolBox.Behaviours.Actions
 {
 	public class EmptyAction : Action
 	{
-		public override void OnEnter()
+
+		protected override void Task()
 		{
-
-		}
-
-		public override void OnExit()
-		{
-
+			
 		}
 	}
 }
