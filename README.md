@@ -8,5 +8,5 @@ Pros:
 
 Cons:
 - Bad visual, not node based, but everything can be setup within inspector
-- Requires Odin Inspector (Cost is 80$)
+- Requires "Odin - Inspector and Serializer" (Cost is 55$)
 - Requires MEC (Free)
