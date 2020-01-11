@@ -1,4 +1,4 @@
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using ToolBox.Behaviours.Conditions;
 using UnityEngine;
@@ -8,21 +8,20 @@ namespace ToolBox.Behaviours.Composites
 {
 	public abstract class Composite
 	{
-		[SerializeField, TabGroup("Events")] protected UnityEvent onSuccess = null;
-		[SerializeField, TabGroup("Events")] protected UnityEvent onFailure = null;
+		[SerializeField, FoldoutGroup("Events")] protected UnityEvent onSuccess = null;
+		[SerializeField, FoldoutGroup("Events")] protected UnityEvent onFailure = null;
 
 		[SerializeField, ListDrawerSettings(
 				NumberOfItemsPerPage = 1,
 				Expanded = true,
-				DraggableItems = false), TabGroup("Data")] private Condition[] conditions = null;
+				DraggableItems = false), FoldoutGroup("Conditions")] private Condition[] conditions = null;
 
 		protected int conditionsCount = 0;
-		protected int currentCount = 0;
+		protected int trueCount = 0;
+		protected int falseCount = 0;
 
 		private List<Condition> trueConditions = null;
 		private List<Condition> falseConditions = null;
-
-		protected int falseCount = 0;
 
 		public void Initialize(BehaviourProcessor behaviour)
 		{
@@ -37,27 +36,30 @@ namespace ToolBox.Behaviours.Composites
 
 		public virtual void ProcessCondition(bool result, Condition condition)
 		{
-			if (result && !trueConditions.Contains(condition))
+			if (result)
 			{
-				trueConditions.Add(condition);
-
-				if (falseConditions.Contains(condition))
+				if (!trueConditions.Contains(condition))
 				{
-					falseConditions.Remove(condition);
-					falseCount--;
+					trueConditions.Add(condition);
+					trueCount++;
+
+					if (falseConditions.Contains(condition))
+					{
+						falseConditions.Remove(condition);
+						falseCount--;
+					}
 				}
 			}
 			else if (!falseConditions.Contains(condition))
-			{
+			{			
 				falseConditions.Add(condition);
+				falseCount++;
 
 				if (trueConditions.Contains(condition))
 				{
 					trueConditions.Remove(condition);
-					currentCount--;
+					trueCount--;
 				}
-
-				falseCount++;
 			}
 		}
 
@@ -66,7 +68,7 @@ namespace ToolBox.Behaviours.Composites
 			trueConditions.Clear();
 			falseConditions.Clear();
 
-			currentCount = 0;
+			trueCount = 0;
 			falseCount = 0;
 
 			for (int i = 0; i < conditionsCount; i++)

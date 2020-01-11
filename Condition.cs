@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ToolBox.Behaviours.Conditions
 {
-	public abstract class Condition : Node          
+	public abstract class Condition : Task          
 	{
 		[SerializeField, FoldoutGroup("Setup")] private bool isNot = false;
 
@@ -12,10 +12,10 @@ namespace ToolBox.Behaviours.Conditions
 
 		public virtual void Initialize(Composite composite, BehaviourProcessor behaviour)
 		{
-			InitializeNode();
+			InitializeTask(behaviour);
 
 			this.composite = composite;
-			this.behaviour = behaviour;
+			behaviourProcessor = behaviour;
 			cachedTransform = behaviour.transform;
 			cachedObject = behaviour.gameObject; 
 		}

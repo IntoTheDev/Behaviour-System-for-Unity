@@ -26,16 +26,16 @@ namespace ToolBox.Behaviours.Conditions
 		protected override void OnTargetFound(Transform target)
 		{
 			isHasTarget = target != null;
-			Task();
+			ProcessTask();
 		}
 
 		protected override void OnTargetLost(Transform target)
 		{
 			isHasTarget = false;
-			Task();
+			ProcessTask();
 		}
 
-		protected override void Task() =>
+		public override void ProcessTask() =>
 			ProcessCondition(isHasTarget);
 	}
 }

@@ -8,7 +8,7 @@ namespace ToolBox.Behaviours.Conditions
 
 		public override void OnEnter()
 		{
-			targetingBehaviour = behaviour.GetComponent<TargetingBehaviour>();
+			targetingBehaviour = behaviourProcessor.GetComponent<TargetingBehaviour>();
 
 			targetingBehaviour.OnTargetFound.AddListener(OnTargetFound);
 			targetingBehaviour.OnTargetLost.AddListener(OnTargetLost);

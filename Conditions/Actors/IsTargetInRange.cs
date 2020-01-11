@@ -1,6 +1,4 @@
-﻿using MEC;
-using Sirenix.OdinInspector;
-using System.Collections.Generic;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace ToolBox.Behaviours.Conditions
@@ -15,7 +13,7 @@ namespace ToolBox.Behaviours.Conditions
 		{
 			base.OnEnter();
 
-			targetingDistance = behaviour.GetComponent<TargetingDistance>();
+			targetingDistance = behaviourProcessor.GetComponent<TargetingDistance>();
 
 			if (targetingBehaviour.Target != null)
 				RunTask();
@@ -35,7 +33,7 @@ namespace ToolBox.Behaviours.Conditions
 		protected override void OnTargetLost(Transform target) =>
 			StopTask();
 
-		protected override void Task()
+		public override void ProcessTask()
 		{
 			bool isInRange = targetingDistance.Distance <= range;
 			ProcessCondition(isInRange);

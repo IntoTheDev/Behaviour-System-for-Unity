@@ -1,8 +1,11 @@
-﻿namespace ToolBox.Behaviours.Conditions
+﻿using Sirenix.OdinInspector;
+
+namespace ToolBox.Behaviours.Conditions
 {
+	[TypeInfoBox("Use Delayed Processor")]
 	public class Wait : Condition
 	{
-		protected override void Task() =>
+		public override void ProcessTask() =>
 			ProcessCondition(true);
 	}
 }

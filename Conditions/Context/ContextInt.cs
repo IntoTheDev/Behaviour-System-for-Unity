@@ -73,7 +73,7 @@ namespace ToolBox.Behaviours.Conditions
 			ProcessCondition(result);
 		}
 
-		protected override void Task() =>
+		public override void ProcessTask() =>
 			operatorAction();
 	}
 }

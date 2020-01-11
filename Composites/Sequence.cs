@@ -1,4 +1,5 @@
 ﻿using ToolBox.Behaviours.Conditions;
+using UnityEngine;
 
 namespace ToolBox.Behaviours.Composites
 {
@@ -11,7 +12,7 @@ namespace ToolBox.Behaviours.Composites
 			if (!result)
 				onFailure?.Invoke();
 
-			if (currentCount >= conditionsCount)
+			if (trueCount >= conditionsCount)
 				onSuccess?.Invoke();
 		}
 	}

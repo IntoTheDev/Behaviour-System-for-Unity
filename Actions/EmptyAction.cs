@@ -1,11 +1,10 @@
+﻿using UnityEngine;
+
 namespace ToolBox.Behaviours.Actions
 {
 	public class EmptyAction : Action
 	{
-
-		protected override void Task()
-		{
-			
-		}
+		public override void ProcessTask() =>
+			Debug.Log("Processing...");
 	}
 }

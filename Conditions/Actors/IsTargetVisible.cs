@@ -10,7 +10,7 @@ namespace ToolBox.Behaviours.Conditions
 		{
 			base.OnEnter();
 
-			targetingLineOfSight = behaviour.GetComponent<TargetingLineOfSight>();
+			targetingLineOfSight = behaviourProcessor.GetComponent<TargetingLineOfSight>();
 
 			if (targetingBehaviour.Target != null)
 				RunTask();
@@ -30,7 +30,7 @@ namespace ToolBox.Behaviours.Conditions
 		protected override void OnTargetLost(Transform target) =>
 			StopTask();
 
-		protected override void Task() =>
+		public override void ProcessTask() =>
 			ProcessCondition(targetingLineOfSight.IsInLineOfSight);
 	}
 }

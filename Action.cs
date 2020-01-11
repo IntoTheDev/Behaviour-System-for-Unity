@@ -1,12 +1,12 @@
 ﻿namespace ToolBox.Behaviours.Actions
 {
-	public abstract class Action : Node
+	public abstract class Action : Task
 	{
 		public virtual void Initialize(BehaviourProcessor behaviour)
 		{
-			InitializeNode();
+			InitializeTask(behaviour);
 
-			this.behaviour = behaviour;
+			behaviourProcessor = behaviour;
 			cachedTransform = behaviour.transform;
 			cachedObject = behaviour.gameObject;
 		}

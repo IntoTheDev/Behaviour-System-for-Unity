@@ -15,15 +15,15 @@ namespace ToolBox.Behaviours
 		[SerializeField] private string stateName = "State";
 #endif
 
-		[SerializeField, TabGroup("Events")] private UnityEvent onEnter = null;
-		[SerializeField, TabGroup("Events")] private UnityEvent onExit = null;
+		[SerializeField, FoldoutGroup("Events")] private UnityEvent onEnter = null;
+		[SerializeField, FoldoutGroup("Events")] private UnityEvent onExit = null;
 
-		[SerializeField, TabGroup("Composites"), ListDrawerSettings(
+		[SerializeField, FoldoutGroup("Composites"), ListDrawerSettings(
 			NumberOfItemsPerPage = 1,
 			Expanded = true,
 			DraggableItems = false)] private Composite[] composites = null;
 
-		[SerializeField, TabGroup("Actions"), ListDrawerSettings(
+		[SerializeField, FoldoutGroup("Actions"), ListDrawerSettings(
 			NumberOfItemsPerPage = 1,
 			Expanded = true,
 			DraggableItems = false)] private Action[] actions = null;

@@ -47,7 +47,7 @@ namespace ToolBox.Behaviours.Conditions
 			}
 		}
 
-		protected override void Task()
+		public override void ProcessTask()
 		{
 			bool isMoving = movementInput.Direction == Vector2.zero ? false : true;
 			ProcessCondition(isMoving);
