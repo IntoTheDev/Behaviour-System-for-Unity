@@ -13,6 +13,6 @@ Pros:
 - Context (Simillar to Blackboard in UE4 or Shared Variables in Behaviour Designer)
 
 Cons:
-- Bad visual, not node based, but everything can be setup within inspector
+- Bad visual, not node based, but everything can be setup within inspector or Custom Editor Window
 - Requires "Odin - Inspector and Serializer" (Cost is 55$)
 - Requires MEC (Free)
