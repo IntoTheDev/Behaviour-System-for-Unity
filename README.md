@@ -9,6 +9,7 @@ Pros:
 - Sequence and Selector for Conditions almost like in Behaviour Trees
 - UnityEvents: Behaviour OnEnter/OnExit, State OnEnter/OnExit, Conditions OnSuccess/OnFailure
 - Conditions invertation with one click (For example: ChanceCondition with chance of 100% will return False if "isNot" Field in the Inspector equals to True)
+- Methods for return to previous Behaviour/State
 
 Cons:
 - Bad visual, not node based, but everything can be setup within inspector
