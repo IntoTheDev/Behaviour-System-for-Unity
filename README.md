@@ -7,7 +7,7 @@ Pros:
 - Modular
 - Different variations of task execution (All Update types and also Slow Update for heavy tasks, Every 'X' Second, On State Enter, on State Exit, Delayed)
 - Sequence and Selector for Conditions almost like in Behaviour Trees
-- There are UnityEvents for: Behaviour OnEnter/OnExit, State OnEnter/OnExit, Conditions OnSuccess/OnFailure
+- UnityEvents: Behaviour OnEnter/OnExit, State OnEnter/OnExit, Conditions OnSuccess/OnFailure
 
 Cons:
 - Bad visual, not node based, but everything can be setup within inspector
