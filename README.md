@@ -2,7 +2,7 @@
 Hierarchical Finite State Machine for Unity.
 
 Pros:
-- It is much easier to work with it than with a default state machine
+- It is much easier and less messy to work with it than with a default state machine
 - Highly optimized
 - Modular
 - Different variations of task execution (All Update types and also Slow Update for heavy tasks, Every 'X' Second, On State Enter, on State Exit, Delayed)
