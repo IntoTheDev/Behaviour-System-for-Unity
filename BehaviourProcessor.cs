@@ -2,6 +2,7 @@
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System.Collections.Generic;
+using ToolBox.Behaviours.Actions;
 using ToolBox.Behaviours.Composites;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,10 +12,10 @@ namespace ToolBox.Behaviours
 	[DisallowMultipleComponent]
 	public class BehaviourProcessor : SerializedMonoBehaviour
 	{
-		[OdinSerialize, TabGroup("Context"), ListDrawerSettings(
-			DraggableItems = false,
-			NumberOfItemsPerPage = 1,
-			Expanded = true)] private Dictionary<ContextKey, SharedData<object>> context = null;
+		[SerializeField, ListDrawerSettings(
+			NumberOfItemsPerPage = 5,
+			Expanded = true,
+			DraggableItems = false), TabGroup("Context")] private SharedData[] sharedDataset = null;
 
 		[OdinSerialize, ListDrawerSettings(
 			NumberOfItemsPerPage = 1,
@@ -125,10 +126,17 @@ namespace ToolBox.Behaviours
 			DisableTasks();
 		}
 
-		public SharedData<object> GetData(ContextKey contextKey)
+		public T GetData<T>(ContextKey contextKey) where T : SharedData
 		{
-			context.TryGetValue(contextKey, out SharedData<object> value);
-			return value;
+			for (int i = 0; i < sharedDataset.Length; i++)
+			{
+				SharedData sharedData = sharedDataset[i];
+
+				if (sharedData.GetKey() == contextKey)
+					return sharedData as T;
+			}
+			
+			return null;
 		}
 
 		private IEnumerator<float> Tick()
@@ -235,6 +243,11 @@ namespace ToolBox.Behaviours
 			[SerializeField, ListDrawerSettings(
 				NumberOfItemsPerPage = 1,
 				Expanded = true,
+				DraggableItems = false), FoldoutGroup("Actions")] private Action[] actions = null;
+
+			[SerializeField, ListDrawerSettings(
+				NumberOfItemsPerPage = 1,
+				Expanded = true,
 				DraggableItems = false), FoldoutGroup("States")] private State[] states = null;
 
 #if UNITY_EDITOR
@@ -252,6 +265,9 @@ namespace ToolBox.Behaviours
 			{
 				for (int i = 0; i < composites.Length; i++)
 					composites[i].Initialize(behaviourProcessor);
+
+				for (int i = 0; i < actions.Length; i++)
+					actions[i].Initialize(behaviourProcessor);
 
 				for (int i = 0; i < states.Length; i++)
 					states[i].Initialize(behaviourProcessor);
@@ -271,6 +287,9 @@ namespace ToolBox.Behaviours
 				for (int i = 0; i < composites.Length; i++)
 					composites[i].OnEnter();
 
+				for (int i = 0; i < actions.Length; i++)
+					actions[i].OnEnter();
+
 				currentState.OnEnter();
 			}
 
@@ -280,6 +299,9 @@ namespace ToolBox.Behaviours
 
 				for (int i = 0; i < composites.Length; i++)
 					composites[i].OnExit();
+
+				for (int i = 0; i < actions.Length; i++)
+					actions[i].OnExit();
 
 				currentState.OnExit();
 			}

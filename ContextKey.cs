@@ -3,6 +3,6 @@ using UnityEngine;
 
 namespace ToolBox.Behaviours
 {
-	[CreateAssetMenu(menuName = "ToolBox/Context Key"), AssetSelector]
-	public class ContextKey : ScriptableObject { }
+	[AssetSelector]
+	public abstract class ContextKey : ScriptableObject { }
 }

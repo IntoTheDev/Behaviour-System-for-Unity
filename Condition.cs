@@ -4,21 +4,19 @@ using UnityEngine;
 
 namespace ToolBox.Behaviours.Conditions
 {
-	public abstract class Condition : Task          
+	public abstract class Condition : Task      
 	{
 		[SerializeField, FoldoutGroup("Setup")] private bool isNot = false;
 
 		private Composite composite = null;
 
-		public virtual void Initialize(Composite composite, BehaviourProcessor behaviour)
+		public void ProcessCondition()
 		{
-			InitializeTask(behaviour);
-
-			this.composite = composite;
-			behaviourProcessor = behaviour;
-			cachedTransform = behaviour.transform;
-			cachedObject = behaviour.gameObject; 
+			throw new System.NotImplementedException();
 		}
+
+		public void SetComposite(Composite composite) =>
+			this.composite = composite;
 
 		protected void ProcessCondition(bool result)
 		{

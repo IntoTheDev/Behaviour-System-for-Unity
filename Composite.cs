@@ -27,11 +27,17 @@ namespace ToolBox.Behaviours.Composites
 		{
 			conditionsCount = conditions.Length;
 
+
 			trueConditions = new List<Condition>(conditionsCount);
 			falseConditions = new List<Condition>(conditionsCount);
 
 			for (int i = 0; i < conditionsCount; i++)
-				conditions[i].Initialize(this, behaviour);
+			{
+				Condition condition = conditions[i];
+
+				condition.Initialize(behaviour);
+				condition.SetComposite(this);
+			}
 		}
 
 		public virtual void ProcessCondition(bool result, Condition condition)

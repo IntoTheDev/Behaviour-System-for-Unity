@@ -13,9 +13,12 @@ namespace ToolBox.Behaviours
 		protected Transform cachedTransform = null;
 		protected GameObject cachedObject = null;
 
-		protected void InitializeTask(BehaviourProcessor behaviourProcessor)
+		public virtual void Initialize(BehaviourProcessor behaviourProcessor)
 		{
 			this.behaviourProcessor = behaviourProcessor;
+			cachedTransform = behaviourProcessor.transform;
+			cachedObject = behaviourProcessor.gameObject;
+
 			taskProcessor.Initialize(this);
 		}
 

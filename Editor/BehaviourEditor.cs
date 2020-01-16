@@ -10,6 +10,6 @@ namespace ToolBox.Behaviours.Editor
 			GetWindow<BehaviourEditor>().Show();
 
 		protected override object GetTarget() =>
-			Selection.activeGameObject.GetComponent<BehaviourProcessor>();
+			Selection.activeGameObject?.GetComponent<BehaviourProcessor>();
 	}
 }
