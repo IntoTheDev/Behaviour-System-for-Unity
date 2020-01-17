@@ -41,7 +41,7 @@ namespace ToolBox.Behaviours
 
 		private const int tasksTotalCount = 4;
 
-		private void Start()
+		private void Awake()
 		{
 			tasks = new List<Task>[tasksTotalCount];
 			tasksCoroutines = new CoroutineHandle[tasksTotalCount];
@@ -58,7 +58,10 @@ namespace ToolBox.Behaviours
 				Debug.LogError("Behaviour is not valid", gameObject);
 				return;
 			}
+		}
 
+		private void Start()
+		{
 			for (int i = 0; i < behaviours.Length; i++)
 				behaviours[i].Initialize(this);
 
@@ -69,7 +72,16 @@ namespace ToolBox.Behaviours
 			currentBehaviourName = currentBehaviour.Name;
 #endif
 
-			EnableTasks();
+			tasksCoroutines[(int)TaskSegment.Default] = Timing.RunCoroutine(Tick(), Segment.Update);
+			tasksCoroutines[(int)TaskSegment.Slow] = Timing.RunCoroutine(SlowTick(), Segment.SlowUpdate);			
+			tasksCoroutines[(int)TaskSegment.Fixed] = Timing.RunCoroutine(FixedTick(), Segment.FixedUpdate);
+			tasksCoroutines[(int)TaskSegment.Late] = Timing.RunCoroutine(LateTick(), Segment.LateUpdate);
+
+			for (int i = 0; i < tasksTotalCount; i++)
+			{
+				if (tasks[i].Count <= 0)
+					Timing.PauseCoroutines(tasksCoroutines[i]);
+			}
 		}
 
 		[Button("Set State"), TabGroup("Debug")]
@@ -113,8 +125,8 @@ namespace ToolBox.Behaviours
 		{
 			if (isInitialized)
 			{
-				currentBehaviour.OnEnter();
 				EnableTasks();
+				currentBehaviour.OnEnter();
 			}
 
 			isInitialized = true;
@@ -122,8 +134,17 @@ namespace ToolBox.Behaviours
 
 		private void OnDisable()
 		{
-			currentBehaviour.OnExit();
 			DisableTasks();
+
+			currentBehaviour.OnExit();
+		}
+
+		private void OnDestroy()
+		{
+			currentBehaviour.OnExit();
+
+			for (int i = 0; i < tasksTotalCount; i++)
+				Timing.KillCoroutines(tasksCoroutines[i]);
 		}
 
 		public T GetData<T>(ContextKey contextKey) where T : SharedData
@@ -195,16 +216,17 @@ namespace ToolBox.Behaviours
 
 		private void EnableTasks()
 		{
-			tasksCoroutines[(int)TaskSegment.Default] = Timing.RunCoroutine(Tick(), Segment.Update);
-			tasksCoroutines[(int)TaskSegment.Slow] = Timing.RunCoroutine(SlowTick(), Segment.SlowUpdate);
-			tasksCoroutines[(int)TaskSegment.Fixed] = Timing.RunCoroutine(FixedTick(), Segment.FixedUpdate);
-			tasksCoroutines[(int)TaskSegment.Late] = Timing.RunCoroutine(LateTick(), Segment.LateUpdate);
+			for (int i = 0; i < tasksTotalCount; i++)
+			{
+				if (tasks[i].Count > 0)
+					Timing.ResumeCoroutines(tasksCoroutines[i]);
+			}
 		}
 
 		private void DisableTasks()
 		{
 			for (int i = 0; i < tasksTotalCount; i++)
-				Timing.KillCoroutines(tasksCoroutines[i]);
+				Timing.PauseCoroutines(tasksCoroutines[i]);
 		}
 
 		public void AddTask(Task task, TaskSegment taskSegment)
@@ -221,6 +243,19 @@ namespace ToolBox.Behaviours
 
 			tasks[index].Remove(task);
 			tasksAmount[index]--;
+		}
+
+		public void ToggleTasks()
+		{
+			for (int i = 0; i < tasksTotalCount; i++)
+			{
+				int tasksCount = tasks[i].Count;
+
+				if (tasksCount > 0)
+					Timing.ResumeCoroutines(tasksCoroutines[i]);
+				else
+					Timing.PauseCoroutines(tasksCoroutines[i]);
+			}
 		}
 
 		[System.Serializable]
@@ -261,8 +296,12 @@ namespace ToolBox.Behaviours
 			private State currentState = null;
 			private State previousState = null;
 
+			private BehaviourProcessor behaviourProcessor = null;
+
 			public void Initialize(BehaviourProcessor behaviourProcessor)
 			{
+				this.behaviourProcessor = behaviourProcessor;
+
 				for (int i = 0; i < composites.Length; i++)
 					composites[i].Initialize(behaviourProcessor);
 
@@ -282,6 +321,15 @@ namespace ToolBox.Behaviours
 
 			public void OnEnter()
 			{
+				currentState = states[0];
+				currentIndex = 0;
+				previousIndex = -1;
+
+#if UNITY_EDITOR
+				currentStateName = currentState.StateName;
+				previousStateName = "";
+#endif
+
 				onEnter?.Invoke();
 
 				for (int i = 0; i < composites.Length; i++)
@@ -291,6 +339,7 @@ namespace ToolBox.Behaviours
 					actions[i].OnEnter();
 
 				currentState.OnEnter();
+				behaviourProcessor.EnableTasks();
 			}
 
 			public void OnExit()
@@ -304,6 +353,7 @@ namespace ToolBox.Behaviours
 					actions[i].OnExit();
 
 				currentState.OnExit();
+				behaviourProcessor.DisableTasks();
 			}
 
 			public void TransitionToState(int index)

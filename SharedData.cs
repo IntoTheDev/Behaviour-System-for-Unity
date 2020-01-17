@@ -10,19 +10,8 @@ namespace ToolBox.Behaviours
 
 		public abstract ContextKey GetKey();
 
-		public abstract void SetValue(object value);
-
 		public abstract object GetValue();
 
-		public abstract void SetValueFromSharedData(SharedData sharedData);
-
-		public abstract bool IsValueEquals(SharedData sharedData);
-
-	}
-
-	public interface ISharedData<T>
-	{
-		T Value { get; set; }
 	}
 
 	public abstract class SharedData<T, C> : SharedData where C : ContextKey
@@ -48,16 +37,7 @@ namespace ToolBox.Behaviours
 		public override ContextKey GetKey() =>
 			contextKey;
 
-		public override void SetValue(object value) =>
-			Value = (T)value;
-
 		public override object GetValue() =>
 			value;
-
-		public override void SetValueFromSharedData(SharedData sharedData) =>
-			Value = (T)sharedData.GetValue();
-
-		public override bool IsValueEquals(SharedData sharedData) =>
-			value.Equals(sharedData.GetValue());
 	}
 }

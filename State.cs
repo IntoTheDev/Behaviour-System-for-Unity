@@ -28,8 +28,12 @@ namespace ToolBox.Behaviours
 			Expanded = true,
 			DraggableItems = false)] private Action[] actions = null;
 
+		private BehaviourProcessor behaviourProcessor = null;
+
 		public void Initialize(BehaviourProcessor behaviour)
 		{
+			behaviourProcessor = behaviour;
+
 			for (int i = 0; i < composites.Length; i++)
 				composites[i].Initialize(behaviour);
 
@@ -46,6 +50,8 @@ namespace ToolBox.Behaviours
 
 			for (int i = 0; i < actions.Length; i++)
 				actions[i].OnEnter();
+
+			behaviourProcessor.ToggleTasks();
 		}
 
 		public void OnExit()

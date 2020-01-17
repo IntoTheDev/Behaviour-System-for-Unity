@@ -2,16 +2,14 @@
 {
 	public abstract class SharedDataSetter<T, C> where C : ContextKey
 	{
-		protected BehaviourProcessor behaviourProcessor = null;
-		protected SharedData sharedTo = null;
+		protected SharedData<T, C> sharedTo = null;
 
-		public virtual void Initialize(ContextKey contextKey, BehaviourProcessor behaviourProcessor)
-		{
-			this.behaviourProcessor = behaviourProcessor;
-			sharedTo = behaviourProcessor.GetData<SharedData>(contextKey);
-		}
+		public virtual void Initialize(ContextKey contextKey, BehaviourProcessor behaviourProcessor) =>
+			sharedTo = behaviourProcessor.GetData<SharedData<T, C>>(contextKey);
 
-		public abstract void SetValue();
+		public abstract void OnEnter();
+
+		public abstract void OnExit();
 	}
 }
 

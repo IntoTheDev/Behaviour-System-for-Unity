@@ -6,16 +6,30 @@ namespace ToolBox.Behaviours.Conditions
 	{
 		[SerializeField] private C contextFrom = null;
 
-		private SharedData otherData = null;
+		private SharedData<T, C> otherData = null;
 
 		public override void Initialize(ContextKey contextKey, BehaviourProcessor behaviourProcessor)
 		{
 			base.Initialize(contextKey, behaviourProcessor);
 
-			otherData = behaviourProcessor.GetData<SharedData>(contextFrom);
+			otherData = behaviourProcessor.GetData<SharedData<T, C>>(contextFrom);
 		}
 
-		public override bool Compare() =>
-			sharedDataToCompare.IsValueEquals(otherData);
+		public override void OnEnter()
+		{
+			OnDataChanged();
+
+			sharedDataToCompare.OnValueChanged += OnDataChanged;
+			otherData.OnValueChanged += OnDataChanged;
+		}
+
+		public override void OnExit()
+		{
+			sharedDataToCompare.OnValueChanged -= OnDataChanged;
+			otherData.OnValueChanged -= OnDataChanged;
+		}
+
+		private void OnDataChanged() =>
+			OnValueChanged?.Invoke(equalityComparer.Equals(sharedDataToCompare.Value, otherData.Value));
 	}
 }

@@ -6,8 +6,10 @@ namespace ToolBox.Behaviours.Actions
 	{
 		[SerializeField] private T value = default;
 
-		public override void SetValue() =>
-			sharedTo.SetValue(value);
+		public override void OnEnter() =>
+			sharedTo.Value = value;
+
+		public override void OnExit() { }
 	}
 }
 

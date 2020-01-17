@@ -1,16 +1,24 @@
-﻿namespace ToolBox.Behaviours.Conditions
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+namespace ToolBox.Behaviours.Conditions
 {
 	public abstract class SharedDataComparer<T, C> where C : ContextKey
 	{
-		protected BehaviourProcessor behaviourProcessor = null;
-		protected SharedData sharedDataToCompare = null;
+		[HideInInspector] public UnityAction<bool> OnValueChanged = null;
+
+		protected SharedData<T, C> sharedDataToCompare = null;
+		protected EqualityComparer<T> equalityComparer = null;
 
 		public virtual void Initialize(ContextKey contextKey, BehaviourProcessor behaviourProcessor)
 		{
-			this.behaviourProcessor = behaviourProcessor;
-			sharedDataToCompare = behaviourProcessor.GetData<SharedData>(contextKey);
+			sharedDataToCompare = behaviourProcessor.GetData<SharedData<T, C>>(contextKey);
+			equalityComparer = EqualityComparer<T>.Default;
 		}
 
-		public abstract bool Compare();
+		public abstract void OnEnter();
+
+		public abstract void OnExit();
 	}
 }

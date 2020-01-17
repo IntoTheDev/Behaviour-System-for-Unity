@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ToolBox.Behaviours.Actions
 {
+	[TypeInfoBox("Use Custom Processor")]
 	public abstract class SetSharedData<T, C> : Action where C : ContextKey
 	{
 		[SerializeField, FoldoutGroup("Data")] private C contextTo = null;
@@ -14,9 +15,14 @@ namespace ToolBox.Behaviours.Actions
 
 			sharedDataSetter.Initialize(contextTo, behaviour);
 		}
-		
-		public override void ProcessTask() =>
-			sharedDataSetter.SetValue();
+
+		public override void OnEnter() =>
+			sharedDataSetter.OnEnter();
+
+		public override void OnExit() =>
+			sharedDataSetter.OnExit();
+
+		public override void ProcessTask() { }
 	}
 }
 

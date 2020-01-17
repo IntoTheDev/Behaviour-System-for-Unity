@@ -6,7 +6,9 @@ namespace ToolBox.Behaviours.Conditions
 	{
 		[SerializeField] private T value = default;
 
-		public override bool Compare() =>
-			sharedDataToCompare.GetValue().Equals(value);
+		public override void OnEnter() =>
+			OnValueChanged?.Invoke(equalityComparer.Equals(sharedDataToCompare.Value, value));
+
+		public override void OnExit() { }
 	}
 }

@@ -10,11 +10,6 @@ namespace ToolBox.Behaviours.Conditions
 
 		private Composite composite = null;
 
-		public void ProcessCondition()
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public void SetComposite(Composite composite) =>
 			this.composite = composite;
 
