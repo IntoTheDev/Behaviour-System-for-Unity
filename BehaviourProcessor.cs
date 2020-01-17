@@ -311,9 +311,6 @@ namespace ToolBox.Behaviours
 				for (int i = 0; i < states.Length; i++)
 					states[i].Initialize(behaviourProcessor);
 
-				currentState = states[0];
-				currentState.OnEnter();
-
 #if UNITY_EDITOR
 				currentStateName = states[0].StateName;
 #endif
