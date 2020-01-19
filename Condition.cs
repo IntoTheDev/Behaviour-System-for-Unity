@@ -15,6 +15,12 @@ namespace ToolBox.Behaviours.Conditions
 		public void SetComposite(Composite composite) =>
 			this.composite = composite;
 
+		public override void OnEnter()
+		{
+			base.OnEnter();
+			wasProcessed = false;
+		}
+
 		protected void ProcessCondition(bool result)
 		{
 			result = (result && !isNot) || (!result && isNot);
