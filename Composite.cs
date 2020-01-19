@@ -27,7 +27,6 @@ namespace ToolBox.Behaviours.Composites
 		{
 			conditionsCount = conditions.Length;
 
-
 			trueConditions = new List<Condition>(conditionsCount);
 			falseConditions = new List<Condition>(conditionsCount);
 

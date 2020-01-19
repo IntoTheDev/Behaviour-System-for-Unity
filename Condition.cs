@@ -4,11 +4,13 @@ using UnityEngine;
 
 namespace ToolBox.Behaviours.Conditions
 {
-	public abstract class Condition : Task      
+	public abstract class Condition : Task
 	{
 		[SerializeField, FoldoutGroup("Setup")] private bool isNot = false;
 
 		private Composite composite = null;
+		private bool previousResult = false;
+		private bool wasProcessed = false;
 
 		public void SetComposite(Composite composite) =>
 			this.composite = composite;
@@ -16,7 +18,12 @@ namespace ToolBox.Behaviours.Conditions
 		protected void ProcessCondition(bool result)
 		{
 			result = (result && !isNot) || (!result && isNot);
-			composite.ProcessCondition(result, this);
+
+			if (result != previousResult || !wasProcessed)
+				composite.ProcessCondition(result, this);
+
+			previousResult = result;
+			wasProcessed = true;
 		}
 	}
 }
