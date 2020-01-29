@@ -6,7 +6,9 @@ namespace ToolBox.Behaviours
 {
 	public abstract class SharedData
 	{
-		[HideInInspector] public UnityAction OnValueChanged = null;
+		[HideInInspector] public event UnityAction OnValueChanged = null;
+
+		protected UnityAction onValueChanged = null;
 
 		public abstract ContextKey GetKey();
 
@@ -27,7 +29,7 @@ namespace ToolBox.Behaviours
 			set
 			{
 				this.value = value;
-				OnValueChanged?.Invoke();
+				onValueChanged?.Invoke();
 			}
 		}
 

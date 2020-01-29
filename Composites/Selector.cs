@@ -9,10 +9,10 @@ namespace ToolBox.Behaviours.Composites
 			base.ProcessCondition(result, condition);
 
 			if (result)
-				onSuccess?.Invoke();
+				OnSuccess?.Invoke();
 
 			if (falseCount >= conditionsCount)
-				onFailure?.Invoke();
+				OnFailure?.Invoke();
 		}
 	}
 }

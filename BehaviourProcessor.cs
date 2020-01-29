@@ -14,13 +14,9 @@ namespace ToolBox.Behaviours
 	{
 		[SerializeField, ListDrawerSettings(
 			NumberOfItemsPerPage = 5,
-			Expanded = true,
-			DraggableItems = false), TabGroup("Context")] private SharedData[] sharedDataset = null;
+			Expanded = true), TabGroup("Context")] private SharedData[] sharedDataset = null;
 
-		[OdinSerialize, ListDrawerSettings(
-			NumberOfItemsPerPage = 1,
-			Expanded = true,
-			DraggableItems = false), TabGroup("Behaviours")] private Behaviour[] behaviours = null;
+		[OdinSerialize, PageList, TabGroup("Behaviours")] private Behaviour[] behaviours = null;
 
 #if UNITY_EDITOR
 		[SerializeField, ReadOnly, TabGroup("Debug")] private string currentBehaviourName = "Behaviour";
@@ -270,20 +266,11 @@ namespace ToolBox.Behaviours
 			[SerializeField, FoldoutGroup("Events")] private UnityEvent onEnter = null;
 			[SerializeField, FoldoutGroup("Events")] private UnityEvent onExit = null;
 
-			[SerializeField, ListDrawerSettings(
-				NumberOfItemsPerPage = 1,
-				Expanded = true,
-				DraggableItems = false), FoldoutGroup("Composites")] private Composite[] composites = null;
+			[SerializeField, PageList, FoldoutGroup("Composites")] private Composite[] composites = null;
 
-			[SerializeField, ListDrawerSettings(
-				NumberOfItemsPerPage = 1,
-				Expanded = true,
-				DraggableItems = false), FoldoutGroup("Actions")] private Action[] actions = null;
+			[SerializeField, PageList, FoldoutGroup("Actions")] private Action[] actions = null;
 
-			[SerializeField, ListDrawerSettings(
-				NumberOfItemsPerPage = 1,
-				Expanded = true,
-				DraggableItems = false), FoldoutGroup("States")] private State[] states = null;
+			[SerializeField, PageList, FoldoutGroup("States")] private State[] states = null;
 
 #if UNITY_EDITOR
 			[SerializeField, ReadOnly, FoldoutGroup("Debug")] private string currentStateName = "State";

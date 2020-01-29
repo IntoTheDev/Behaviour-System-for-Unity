@@ -6,7 +6,7 @@ namespace ToolBox.Behaviours.Conditions
 {
 	public abstract class SharedDataComparer<T, C> where C : ContextKey
 	{
-		[HideInInspector] public UnityAction<bool> OnValueChanged = null;
+		[HideInInspector] public event UnityAction<bool> OnValueChanged = null;
 
 		protected SharedData<T, C> sharedDataToCompare = null;
 		protected EqualityComparer<T> equalityComparer = null;
@@ -20,5 +20,8 @@ namespace ToolBox.Behaviours.Conditions
 		public abstract void OnEnter();
 
 		public abstract void OnExit();
+
+		public void Invoke(bool result) =>
+			OnValueChanged?.Invoke(result);
 	}
 }

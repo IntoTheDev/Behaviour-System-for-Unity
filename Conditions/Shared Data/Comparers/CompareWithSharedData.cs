@@ -30,6 +30,6 @@ namespace ToolBox.Behaviours.Conditions
 		}
 
 		private void OnDataChanged() =>
-			OnValueChanged?.Invoke(equalityComparer.Equals(sharedDataToCompare.Value, otherData.Value));
+			Invoke(equalityComparer.Equals(sharedDataToCompare.Value, otherData.Value));
 	}
 }

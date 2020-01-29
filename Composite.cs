@@ -8,8 +8,11 @@ namespace ToolBox.Behaviours.Composites
 {
 	public abstract class Composite
 	{
-		[SerializeField, FoldoutGroup("Events")] protected UnityEvent onSuccess = null;
-		[SerializeField, FoldoutGroup("Events")] protected UnityEvent onFailure = null;
+		protected UnityEvent OnSuccess => onSuccess;
+		protected UnityEvent OnFailure => onFailure;
+
+		[SerializeField, FoldoutGroup("Events")] private UnityEvent onSuccess = null;
+		[SerializeField, FoldoutGroup("Events")] private UnityEvent onFailure = null;
 
 		[SerializeField, ListDrawerSettings(
 				NumberOfItemsPerPage = 1,
