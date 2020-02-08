@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d530d61f3ca2248a341740becc9823, type: 3}
+  m_Name: New Behaviour Preset
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Behaviour
+      Entry: 7
+      Data: 0|ToolBox.Behaviours.Behaviour, Assembly-CSharp
+    - Name: name
+      Entry: 1
+      Data: Behaviour
+    - Name: behaviourPreset
+      Entry: 6
+      Data: 
+    - Name: onEnter
+      Entry: 7
+      Data: 1|UnityEngine.Events.UnityEvent, UnityEngine.CoreModule
+    - Name: m_PersistentCalls
+      Entry: 7
+      Data: 2|UnityEngine.Events.PersistentCallGroup, UnityEngine.CoreModule
+    - Name: m_Calls
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[UnityEngine.Events.PersistentCall,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: onExit
+      Entry: 7
+      Data: 4|UnityEngine.Events.UnityEvent, UnityEngine.CoreModule
+    - Name: m_PersistentCalls
+      Entry: 7
+      Data: 5|UnityEngine.Events.PersistentCallGroup, UnityEngine.CoreModule
+    - Name: m_Calls
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[UnityEngine.Events.PersistentCall,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: composites
+      Entry: 6
+      Data: 
+    - Name: actions
+      Entry: 6
+      Data: 
+    - Name: states
+      Entry: 6
+      Data: 
+    - Name: currentStateName
+      Entry: 1
+      Data: State
+    - Name: previousStateName
+      Entry: 1
+      Data: 
+    - Name: currentIndex
+      Entry: 3
+      Data: 0
+    - Name: previousIndex
+      Entry: 3
+      Data: -1
+    - Name: 
+      Entry: 8
+      Data: 
+  Behaviour:
+    name: Behaviour
+    behaviourPreset: {fileID: 0}
+    onEnter:
+      m_PersistentCalls:
+        m_Calls: []
+    onExit:
+      m_PersistentCalls:
+        m_Calls: []
+    states: []
+    currentStateName: State
+    previousStateName: 
+    currentIndex: 0
+    previousIndex: -1
